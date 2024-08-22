@@ -1,3 +1,3 @@
 export const fetcher = (url: string) => fetch(
-  `http://localhost:5000` + url
+  `https://test-kingit-backend.onrender.com` + url
 ).then((res) => res.json());

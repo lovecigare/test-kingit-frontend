@@ -30,6 +30,10 @@ function App() {
           username: `${stat.firstName} ${stat.lastName}`,
           avatarUrl: stat.avatarUrl
         },
+        country: {
+          countryName: `${stat.country}`,
+          flagUrl: `${stat.flagUrl}`,
+        },
         points: stat.points
       };
     }) || [];

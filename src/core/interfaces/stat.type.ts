@@ -4,5 +4,7 @@ export type Stat = {
   lastName: string;
   avatarUrl: string;
   points: number;
+  country: string;
+  flagUrl: string;
   deltaSign: 1 | 0 | -1;
 }

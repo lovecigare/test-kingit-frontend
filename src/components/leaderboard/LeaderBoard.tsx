@@ -1,8 +1,8 @@
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
-import RemoveIcon from '@mui/icons-material/Remove';
+import RemoveIcon from "@mui/icons-material/Remove";
 import SaveIcon from "@mui/icons-material/Save";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
@@ -19,8 +19,8 @@ import {
   GridRowModesModel,
   GridRowParams,
   GridRowsProp,
-  MuiEvent
-} from '@mui/x-data-grid';
+  MuiEvent,
+} from "@mui/x-data-grid";
 import React from "react";
 import { KeyedMutator } from "swr";
 
@@ -33,14 +33,11 @@ interface Props {
   refetch: KeyedMutator<Stat[]>;
 }
 
-const LeaderBoard = ({
-  rows,
-  isLoading,
-  error,
-  refetch
-}: Props) => {
+const LeaderBoard = ({ rows, isLoading, error, refetch }: Props) => {
   const [isUpdatingTable, setIsUpdatingTable] = React.useState(false);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+    {}
+  );
 
   const columns: GridColDef[] = [
     {
@@ -48,10 +45,12 @@ const LeaderBoard = ({
       headerName: "Place",
       width: 150,
       sortable: false,
-      renderCell: (params: GridRenderCellParams<{
-        label: string,
-        deltaSign: -1 | 0 | 1;
-      }>) => (
+      renderCell: (
+        params: GridRenderCellParams<{
+          label: string;
+          deltaSign: -1 | 0 | 1;
+        }>
+      ) => (
         <Stack direction="row" alignItems="center" gap={1}>
           {params.value.deltaSign === 1 ? (
             <ArrowDropUpIcon color="success" />
@@ -62,17 +61,19 @@ const LeaderBoard = ({
           )}
           <Typography>{params.value.label}</Typography>
         </Stack>
-      )
+      ),
     },
     {
       field: "name",
       headerName: "Name",
       width: 300,
       sortable: false,
-      renderCell: (params: GridRenderCellParams<{
-        username: string,
-        avatarUrl: string;
-      }>) => (
+      renderCell: (
+        params: GridRenderCellParams<{
+          username: string;
+          avatarUrl: string;
+        }>
+      ) => (
         <Stack direction="row" alignItems="center" gap={2}>
           <Avatar src={params.value.avatarUrl} />
           <Typography>{params.value.username}</Typography>
@@ -87,6 +88,24 @@ const LeaderBoard = ({
       sortable: false,
       renderCell: (params: GridRenderCellParams<Number>) => (
         <Typography>{params.value} PTS</Typography>
+      ),
+    },
+    {
+      field: "country",
+      headerName: "Predicted World Champion",
+      flex: 1,
+      editable: true,
+      sortable: false,
+      renderCell: (
+        params: GridRenderCellParams<{
+          countryName: string;
+          flagUrl: string;
+        }>
+      ) => (
+        <Stack direction="row" alignItems="center" gap={2}>
+          <Avatar src={params.value.flagUrl} />
+          <Typography>{params.value.countryName}</Typography>
+        </Stack>
       ),
     },
     {
@@ -123,12 +142,12 @@ const LeaderBoard = ({
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
-          />
+          />,
         ];
 
         return actionItems;
       },
-    }
+    },
   ];
 
   const processRowUpdate = async (
@@ -141,17 +160,17 @@ const LeaderBoard = ({
 
     try {
       const response = await fetch(
-        `${'http://localhost:5000'}/api/stats/updateStat`,
+        `${"https://test-kingit-backend.onrender.com"}/api/stats/updateStat`,
         {
           method: "POST",
           headers: {
-            'Content-type': "application/json",
-            Accept: 'application/json',
+            "Content-type": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify({
             id: newRow.uuid,
-            points: +newRow.points
-          })
+            points: +newRow.points,
+          }),
         }
       );
       const result = await response.json();
@@ -167,7 +186,10 @@ const LeaderBoard = ({
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit, fieldToFocus: "points" } });
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "points" },
+    });
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
@@ -200,9 +222,7 @@ const LeaderBoard = ({
   };
 
   if (error) {
-    return (
-      <Typography color="error">Failed to load data.</Typography>
-    );
+    return <Typography color="error">Failed to load data.</Typography>;
   }
 
   return (
@@ -225,9 +245,9 @@ const LeaderBoard = ({
       rowHeight={60}
       columnHeaderHeight={48}
       sx={{
-        '& .MuiDataGrid-columnHeaderTitle': {
+        "& .MuiDataGrid-columnHeaderTitle": {
           fontWeight: "bold",
-          fontSize: "16px"
+          fontSize: "16px",
         },
       }}
     />
